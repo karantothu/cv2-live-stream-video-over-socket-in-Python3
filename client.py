@@ -12,8 +12,8 @@ connection = client_socket.makefile('wb')
 
 cam = cv2.VideoCapture(0)
 
-cam.set(3, 320);
-cam.set(4, 240);
+cam.set(3, 320)
+cam.set(4, 240)
 
 img_counter = 0
 
