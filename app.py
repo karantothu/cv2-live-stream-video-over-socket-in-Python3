@@ -73,17 +73,6 @@ def get_frame():
 
 @app.route('/')
 def index():
-    template = """
-    <html>
-        <head>
-            <title>Video Streaming Demonstration</title>
-        </head>
-        <body>
-            <h1>Video Streaming Demonstration</h1>
-            <img id="bg" src="{{ url_for('video_feed') }}">
-        </body>
-    </html>
-    """
     return render_template('index.html')
 
 @app.route('/video_feed')
