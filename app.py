@@ -1,3 +1,5 @@
+import signal
+import atexit
 import socket
 import sys
 import cv2
@@ -79,14 +81,25 @@ def index():
 def video_feed():
     return Response(get_frame(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+t1 = Thread(target=create_listener).start()
+
+def sig_handler(signum=None, frame=None):
+    global stop_threads, conn
+    if conn:
+        conn.close()
+    stop_threads = True
+    sys.exit(0)
+
+
+atexit.register(sig_handler)
+signal.signal(signal.SIGINT, sig_handler)
+signal.signal(signal.SIGTERM, sig_handler)
+
 
 if __name__ == '__main__':
     try:
-        t = threading.Thread(target=create_listener)
-        t.daemon = True
-        t.start()
-        app.run(debug=True, port=3000)
+        app.run(debug=True, port=3000, use_reloader=False)
     except Exception:
-        conn.close()
+        sys.exit(0)
     
     
